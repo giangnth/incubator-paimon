@@ -100,12 +100,11 @@ public class MongoDBParseUtils {
         while (keys.hasNext()) {
             String key = keys.next();
             Object value = jsonObject.get(key);
-            if (jsonObject.get(key) instanceof JSONObject) {
-                JSONObject nestedJsonObject = (JSONObject) jsonObject.get(key);
-                Object result = parseBsonObject(nestedJsonObject);
+            if (value instanceof JSONObject) {
+                Object result = parseBsonObject((JSONObject) value);
                 resultJsonObject.put(key, result.toString());
-            } else if (jsonObject.get(key) instanceof JSONArray) {
-                JSONArray jsonArray = (JSONArray) jsonObject.get(key);
+            } else if (value instanceof JSONArray) {
+                JSONArray jsonArray = (JSONArray) value;
                 List<Object> lstObject = new ArrayList<>();
                 for (int i = 0; i < jsonArray.length(); i++) {
                     Object nestedObject = jsonArray.get(i);
@@ -118,7 +117,8 @@ public class MongoDBParseUtils {
                 }
                 resultJsonObject.put(key, lstObject.toString());
             } else {
-                resultJsonObject.put(key, value.toString());
+                resultJsonObject.put(
+                        key, value.toString().equals("null") ? "{}" : value.toString());
             }
         }
         return resultJsonObject;
