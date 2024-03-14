@@ -178,7 +178,7 @@ public class MongoDBSyncTableActionITCase extends MongoDBActionITCaseBase {
         mongodbConfig.put("collection", "products");
         mongodbConfig.put("field.name", "_id,name,description");
         mongodbConfig.put("parser.path", "$._id,$.name,$.description");
-        mongodbConfig.put("schema.start.mode", "specified");
+        mongodbConfig.put("schema.start.mode", "parse_column");
 
         MongoDBSyncTableAction action1 =
                 syncTableActionBuilder(mongodbConfig).withTableConfig(tableConfig).build();
