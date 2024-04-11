@@ -109,7 +109,9 @@ public class CdcRecordUtils {
                                 + value
                                 + " to type "
                                 + type
-                                + ". Waiting for schema update.",
+                                + " from field "
+                                + key
+                                + " . Waiting for schema update.",
                         e);
                 return Optional.empty();
             }
