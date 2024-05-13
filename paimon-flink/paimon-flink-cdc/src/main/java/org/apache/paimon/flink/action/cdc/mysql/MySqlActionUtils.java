@@ -19,9 +19,11 @@
 package org.apache.paimon.flink.action.cdc.mysql;
 
 import org.apache.paimon.catalog.Identifier;
+import org.apache.paimon.flink.action.cdc.CdcSourceRecord;
 import org.apache.paimon.flink.action.cdc.TypeMapping;
 import org.apache.paimon.flink.action.cdc.schema.JdbcSchemaUtils;
 import org.apache.paimon.flink.action.cdc.schema.JdbcSchemasInfo;
+import org.apache.paimon.flink.action.cdc.serialization.CdcDebeziumDeserializationSchema;
 import org.apache.paimon.schema.Schema;
 
 import org.apache.flink.cdc.connectors.mysql.source.MySqlSource;
@@ -30,7 +32,6 @@ import org.apache.flink.cdc.connectors.mysql.source.config.MySqlSourceOptions;
 import org.apache.flink.cdc.connectors.mysql.source.offset.BinlogOffset;
 import org.apache.flink.cdc.connectors.mysql.source.offset.BinlogOffsetBuilder;
 import org.apache.flink.cdc.connectors.mysql.table.StartupOptions;
-import org.apache.flink.cdc.debezium.JsonDebeziumDeserializationSchema;
 import org.apache.flink.cdc.debezium.table.DebeziumOptions;
 import org.apache.flink.cdc.debezium.utils.JdbcUrlUtils;
 import org.apache.flink.configuration.ConfigOption;
@@ -142,9 +143,9 @@ public class MySqlActionUtils {
         return mySqlSchemasInfo;
     }
 
-    public static MySqlSource<String> buildMySqlSource(
+    public static MySqlSource<CdcSourceRecord> buildMySqlSource(
             Configuration mySqlConfig, String tableList, TypeMapping typeMapping) {
-        MySqlSourceBuilder<String> sourceBuilder = MySqlSource.builder();
+        MySqlSourceBuilder<CdcSourceRecord> sourceBuilder = MySqlSource.builder();
 
         sourceBuilder
                 .hostname(mySqlConfig.get(MySqlSourceOptions.HOSTNAME))
@@ -220,8 +221,8 @@ public class MySqlActionUtils {
 
         Map<String, Object> customConverterConfigs = new HashMap<>();
         customConverterConfigs.put(JsonConverterConfig.DECIMAL_FORMAT_CONFIG, "numeric");
-        JsonDebeziumDeserializationSchema schema =
-                new JsonDebeziumDeserializationSchema(true, customConverterConfigs);
+        CdcDebeziumDeserializationSchema schema =
+                new CdcDebeziumDeserializationSchema(true, customConverterConfigs);
 
         boolean scanNewlyAddedTables = mySqlConfig.get(SCAN_NEWLY_ADDED_TABLE_ENABLED);
 

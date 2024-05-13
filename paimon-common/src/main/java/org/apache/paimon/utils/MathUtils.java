@@ -93,4 +93,21 @@ public class MathUtils {
 
         return Math.min(v1, v2);
     }
+
+    /** Safely increments the given int value by one, ensuring that no overflow occurs. */
+    public static int incrementSafely(int a) {
+        if (a == Integer.MAX_VALUE) {
+            return a;
+        }
+        return a + 1;
+    }
+
+    /** Safely add the given int value by another int value, ensuring that no overflow occurs. */
+    public static int addSafely(int a, int b) {
+        try {
+            return Math.addExact(a, b);
+        } catch (ArithmeticException e) {
+            return Integer.MAX_VALUE;
+        }
+    }
 }

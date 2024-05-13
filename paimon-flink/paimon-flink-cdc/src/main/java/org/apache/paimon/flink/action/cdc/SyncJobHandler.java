@@ -121,7 +121,6 @@ public class SyncJobHandler {
                         cdcSourceConfig,
                         POSTGRES_CONF,
                         PostgresSourceOptions.HOSTNAME,
-                        PostgresSourceOptions.PG_PORT,
                         PostgresSourceOptions.USERNAME,
                         PostgresSourceOptions.PASSWORD,
                         PostgresSourceOptions.DATABASE_NAME,
@@ -181,7 +180,7 @@ public class SyncJobHandler {
         }
     }
 
-    public Source<String, ?, ?> provideSource() {
+    public Source<CdcSourceRecord, ?, ?> provideSource() {
         switch (sourceType) {
             case KAFKA:
                 return KafkaActionUtils.buildKafkaSource(cdcSourceConfig);
@@ -193,7 +192,7 @@ public class SyncJobHandler {
         }
     }
 
-    public FlatMapFunction<String, RichCdcMultiplexRecord> provideRecordParser(
+    public FlatMapFunction<CdcSourceRecord, RichCdcMultiplexRecord> provideRecordParser(
             boolean caseSensitive,
             List<ComputedColumn> computedColumns,
             TypeMapping typeMapping,

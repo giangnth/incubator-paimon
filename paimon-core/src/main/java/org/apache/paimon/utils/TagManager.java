@@ -26,11 +26,16 @@ import org.apache.paimon.fs.Path;
 import org.apache.paimon.manifest.ManifestEntry;
 import org.apache.paimon.operation.TagDeletion;
 import org.apache.paimon.table.sink.TagCallback;
+import org.apache.paimon.tag.Tag;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nullable;
+
 import java.io.IOException;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
@@ -75,20 +80,36 @@ public class TagManager {
     }
 
     /** Create a tag from given snapshot and save it in the storage. */
-    public void createTag(Snapshot snapshot, String tagName, List<TagCallback> callbacks) {
+    public void createTag(
+            Snapshot snapshot,
+            String tagName,
+            @Nullable Duration timeRetained,
+            List<TagCallback> callbacks) {
         checkArgument(!StringUtils.isBlank(tagName), "Tag name '%s' is blank.", tagName);
-        checkArgument(!tagExists(tagName), "Tag name '%s' already exists.", tagName);
 
-        Path newTagPath = tagPath(tagName);
-        try {
-            fileIO.writeFileUtf8(newTagPath, snapshot.toJson());
-        } catch (IOException e) {
-            throw new RuntimeException(
-                    String.format(
-                            "Exception occurs when committing tag '%s' (path %s). "
-                                    + "Cannot clean up because we can't determine the success.",
-                            tagName, newTagPath),
-                    e);
+        // skip create tag for the same snapshot of the same name.
+        if (tagExists(tagName)) {
+            Snapshot tagged = taggedSnapshot(tagName);
+            Preconditions.checkArgument(
+                    tagged.id() == snapshot.id(), "Tag name '%s' already exists.", tagName);
+        } else {
+            Path newTagPath = tagPath(tagName);
+            try {
+                fileIO.writeFileUtf8(
+                        newTagPath,
+                        timeRetained != null
+                                ? Tag.fromSnapshotAndTagTtl(
+                                                snapshot, timeRetained, LocalDateTime.now())
+                                        .toJson()
+                                : snapshot.toJson());
+            } catch (IOException e) {
+                throw new RuntimeException(
+                        String.format(
+                                "Exception occurs when committing tag '%s' (path %s). "
+                                        + "Cannot clean up because we can't determine the success.",
+                                tagName, newTagPath),
+                        e);
+            }
         }
 
         try {
@@ -120,7 +141,10 @@ public class TagManager {
     }
 
     public void deleteTag(
-            String tagName, TagDeletion tagDeletion, SnapshotManager snapshotManager) {
+            String tagName,
+            TagDeletion tagDeletion,
+            SnapshotManager snapshotManager,
+            List<TagCallback> callbacks) {
         checkArgument(!StringUtils.isBlank(tagName), "Tag name '%s' is blank.", tagName);
         checkArgument(tagExists(tagName), "Tag '%s' doesn't exist.", tagName);
 
@@ -129,12 +153,12 @@ public class TagManager {
 
         // skip file deletion if snapshot exists
         if (snapshotManager.snapshotExists(taggedSnapshot.id())) {
-            fileIO.deleteQuietly(tagPath(tagName));
+            deleteTagMetaFile(tagName, callbacks);
             return;
         } else {
             // FileIO discovers tags by tag file, so we should read all tags before we delete tag
             SortedMap<Snapshot, List<String>> tags = tags();
-            fileIO.deleteQuietly(tagPath(tagName));
+            deleteTagMetaFile(tagName, callbacks);
 
             // skip data file clean if more than 1 tags are created based on this snapshot
             if (tags.get(taggedSnapshot).size() > 1) {
@@ -144,6 +168,17 @@ public class TagManager {
         }
 
         doClean(taggedSnapshot, taggedSnapshots, snapshotManager, tagDeletion);
+    }
+
+    private void deleteTagMetaFile(String tagName, List<TagCallback> callbacks) {
+        fileIO.deleteQuietly(tagPath(tagName));
+        try {
+            callbacks.forEach(callback -> callback.notifyDeletion(tagName));
+        } finally {
+            for (TagCallback tagCallback : callbacks) {
+                IOUtils.closeQuietly(tagCallback);
+            }
+        }
     }
 
     private void doClean(
@@ -207,7 +242,8 @@ public class TagManager {
     /** Get the tagged snapshot by name. */
     public Snapshot taggedSnapshot(String tagName) {
         checkArgument(tagExists(tagName), "Tag '%s' doesn't exist.", tagName);
-        return Snapshot.fromPath(fileIO, tagPath(tagName));
+        // Trim to snapshot to avoid equals and compare snapshot.
+        return Tag.fromPath(fileIO, tagPath(tagName)).trimToSnapshot();
     }
 
     public long tagCount() {
@@ -223,7 +259,7 @@ public class TagManager {
         return new ArrayList<>(tags().keySet());
     }
 
-    /** Get all tagged snapshots with names sorted by snapshot id. */
+    /** Get all tagged snapshots with tag names sorted by snapshot id. */
     public SortedMap<Snapshot, List<String>> tags() {
         return tags(tagName -> true);
     }
@@ -256,16 +292,36 @@ public class TagManager {
                 }
                 // If the tag file is not found, it might be deleted by
                 // other processes, so just skip this tag
-                Snapshot.safelyFromPath(fileIO, path)
-                        .ifPresent(
-                                snapshot ->
-                                        tags.computeIfAbsent(snapshot, s -> new ArrayList<>())
-                                                .add(tagName));
+                Snapshot snapshot = Snapshot.safelyFromPath(fileIO, path);
+                if (snapshot != null) {
+                    tags.computeIfAbsent(snapshot, s -> new ArrayList<>()).add(tagName);
+                }
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
         return tags;
+    }
+
+    /** Get all {@link Tag}s. */
+    public List<Pair<Tag, String>> tagObjects() {
+        try {
+            List<Path> paths =
+                    listVersionedFileStatus(fileIO, tagDirectory(), TAG_PREFIX)
+                            .map(FileStatus::getPath)
+                            .collect(Collectors.toList());
+            List<Pair<Tag, String>> tags = new ArrayList<>();
+            for (Path path : paths) {
+                String tagName = path.getName().substring(TAG_PREFIX.length());
+                Tag tag = Tag.safelyFromPath(fileIO, path);
+                if (tag != null) {
+                    tags.add(Pair.of(tag, tagName));
+                }
+            }
+            return tags;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public List<String> sortTagsOfOneSnapshot(List<String> tagNames) {

@@ -35,16 +35,15 @@ import org.apache.paimon.predicate.PredicateBuilder;
 import org.apache.paimon.schema.Schema;
 import org.apache.paimon.schema.SchemaManager;
 import org.apache.paimon.schema.SchemaUtils;
+import org.apache.paimon.schema.TableSchema;
 import org.apache.paimon.stats.ColStats;
 import org.apache.paimon.stats.Statistics;
 import org.apache.paimon.stats.StatsFileHandler;
-import org.apache.paimon.testutils.assertj.AssertionUtils;
 import org.apache.paimon.types.DataField;
 import org.apache.paimon.types.DataTypes;
 import org.apache.paimon.types.RowKind;
 import org.apache.paimon.types.RowType;
 import org.apache.paimon.utils.FailingFileIO;
-import org.apache.paimon.utils.RowDataToObjectArrayConverter;
 import org.apache.paimon.utils.SnapshotManager;
 import org.apache.paimon.utils.TraceableFileIO;
 
@@ -66,6 +65,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Predicate;
@@ -73,6 +73,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static org.apache.paimon.index.HashIndexFile.HASH_INDEX;
+import static org.apache.paimon.testutils.assertj.PaimonAssertions.anyCauseMatches;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -174,8 +175,7 @@ public class FileStoreCommitTest {
         Path firstSnapshotPath = snapshotManager.snapshotPath(Snapshot.FIRST_SNAPSHOT_ID);
         LocalFileIO.create().deleteQuietly(firstSnapshotPath);
         // this test succeeds if this call does not fail
-        store.newCommit(UUID.randomUUID().toString())
-                .filterCommitted(Collections.singletonList(new ManifestCommittable(999)));
+        store.newCommit(UUID.randomUUID().toString()).filterCommitted(Collections.singleton(999L));
     }
 
     @Test
@@ -194,12 +194,7 @@ public class FileStoreCommitTest {
         }
 
         // all commit identifiers should be filtered out
-        List<ManifestCommittable> remaining =
-                store.newCommit(user)
-                        .filterCommitted(
-                                commitIdentifiers.stream()
-                                        .map(ManifestCommittable::new)
-                                        .collect(Collectors.toList()));
+        Set<Long> remaining = store.newCommit(user).filterCommitted(commitIdentifiers);
         assertThat(remaining).isEmpty();
     }
 
@@ -557,7 +552,10 @@ public class FileStoreCommitTest {
             assertThatThrownBy(
                             () ->
                                     store.newCommit()
-                                            .commit(committables.get(0), Collections.emptyMap()))
+                                            .commit(
+                                                    committables.get(0),
+                                                    Collections.emptyMap(),
+                                                    true))
                     .isInstanceOf(RuntimeException.class)
                     .hasMessageContaining("Give up committing.");
         }
@@ -650,8 +648,6 @@ public class FileStoreCommitTest {
         assertThat(snapshot.commitKind()).isEqualTo(Snapshot.CommitKind.OVERWRITE);
 
         // check data
-        RowDataToObjectArrayConverter partitionConverter =
-                new RowDataToObjectArrayConverter(TestKeyValueGenerator.DEFAULT_PART_TYPE);
         org.apache.paimon.predicate.Predicate partitionFilter =
                 partitions.stream()
                         .map(
@@ -663,7 +659,7 @@ public class FileStoreCommitTest {
 
         List<KeyValue> expectedKvs = new ArrayList<>();
         for (Map.Entry<BinaryRow, List<KeyValue>> entry : data.entrySet()) {
-            if (partitionFilter.test(partitionConverter.convert(entry.getKey()))) {
+            if (partitionFilter.test(entry.getKey())) {
                 continue;
             }
             expectedKvs.addAll(entry.getValue());
@@ -686,7 +682,7 @@ public class FileStoreCommitTest {
         TestFileStore store = createStore(false);
         assertThatThrownBy(() -> store.dropPartitions(Collections.emptyList()))
                 .satisfies(
-                        AssertionUtils.anyCauseMatches(
+                        anyCauseMatches(
                                 IllegalArgumentException.class,
                                 "Partitions list cannot be empty."));
     }
@@ -859,15 +855,16 @@ public class FileStoreCommitTest {
                         ? FailingFileIO.getFailingPath(failingName, tempDir.toString())
                         : TraceableFileIO.SCHEME + "://" + tempDir.toString();
         Path path = new Path(tempDir.toUri());
-        SchemaUtils.forceCommit(
-                new SchemaManager(new LocalFileIO(), path),
-                new Schema(
-                        TestKeyValueGenerator.DEFAULT_ROW_TYPE.getFields(),
-                        TestKeyValueGenerator.DEFAULT_PART_TYPE.getFieldNames(),
-                        TestKeyValueGenerator.getPrimaryKeys(
-                                TestKeyValueGenerator.GeneratorMode.MULTI_PARTITIONED),
-                        Collections.emptyMap(),
-                        null));
+        TableSchema tableSchema =
+                SchemaUtils.forceCommit(
+                        new SchemaManager(new LocalFileIO(), path),
+                        new Schema(
+                                TestKeyValueGenerator.DEFAULT_ROW_TYPE.getFields(),
+                                TestKeyValueGenerator.DEFAULT_PART_TYPE.getFieldNames(),
+                                TestKeyValueGenerator.getPrimaryKeys(
+                                        TestKeyValueGenerator.GeneratorMode.MULTI_PARTITIONED),
+                                Collections.emptyMap(),
+                                null));
         return new TestFileStore.Builder(
                         "avro",
                         root,
@@ -876,7 +873,8 @@ public class FileStoreCommitTest {
                         TestKeyValueGenerator.KEY_TYPE,
                         TestKeyValueGenerator.DEFAULT_ROW_TYPE,
                         TestKeyValueGenerator.TestKeyValueFieldsExtractor.EXTRACTOR,
-                        DeduplicateMergeFunction.factory())
+                        DeduplicateMergeFunction.factory(),
+                        tableSchema)
                 .changelogProducer(changelogProducer)
                 .build();
     }
