@@ -107,21 +107,19 @@ public interface MongoVersionStrategy {
                         computedColumns,
                         rowTypeBuilder);
             case DYNAMIC:
-                return parseAndTypeJsonRow(document.toString(), paimonFieldTypes, computedColumns);
+                return parseAndTypeJsonRow(document.toString(), rowTypeBuilder, computedColumns);
             case PARSE_COLUMN:
                 return parseColumnsFromJsonRecord(
-                        document.toString(), paimonFieldTypes, computedColumns);
+                        document.toString(), rowTypeBuilder, computedColumns);
             default:
                 throw new RuntimeException("Unsupported extraction mode: " + mode);
         }
     }
 
     default Map<String, String> parseColumnsFromJsonRecord(
-            String record,
-            LinkedHashMap<String, DataType> fieldTypes,
-            List<ComputedColumn> computedColumns) {
+            String record, RowType.Builder rowTypeBuilder, List<ComputedColumn> computedColumns) {
         Map<String, String> parsedRow = MongoDBParseUtils.parseDocument(record);
-        return processParsedData(parsedRow, fieldTypes, computedColumns);
+        return processParsedData(parsedRow, rowTypeBuilder, computedColumns);
     }
 
     /** Parses and types a JSON row based on the given parameters. */
