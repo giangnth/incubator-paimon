@@ -52,6 +52,8 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import static org.apache.paimon.io.DataFileMeta.getMaxSequenceNumber;
+
 /**
  * Base {@link FileStoreWrite} implementation.
  *
@@ -211,10 +213,13 @@ public abstract class AbstractFileStoreWrite<T> implements FileStoreWrite<T> {
                 result.add(committable);
 
                 if (committable.isEmpty()) {
-                    // Condition 1: There is no more record waiting to be committed.
+                    // Condition 1: There is no more record waiting to be committed. Note that the
+                    // condition is < (instead of <=), because each commit identifier may have
+                    // multiple snapshots. We must make sure all snapshots of this identifier are
+                    // committed.
                     // Condition 2: No compaction is in progress. That is, no more changelog will be
                     // produced.
-                    if (writerContainer.lastModifiedCommitIdentifier <= latestCommittedIdentifier
+                    if (writerContainer.lastModifiedCommitIdentifier < latestCommittedIdentifier
                             && !writerContainer.writer.isCompacting()) {
                         // Clear writer if no update, and if its latest modification has committed.
                         //
@@ -297,6 +302,7 @@ public abstract class AbstractFileStoreWrite<T> implements FileStoreWrite<T> {
                                 writerContainer.baseSnapshotId,
                                 writerContainer.lastModifiedCommitIdentifier,
                                 dataFiles,
+                                writerContainer.writer.maxSequenceNumber(),
                                 writerContainer.indexMaintainer,
                                 writerContainer.deletionVectorsMaintainer,
                                 increment));
@@ -317,6 +323,7 @@ public abstract class AbstractFileStoreWrite<T> implements FileStoreWrite<T> {
                             state.partition,
                             state.bucket,
                             state.dataFiles,
+                            state.maxSequenceNumber,
                             state.commitIncrement,
                             compactExecutor(),
                             state.deletionVectorsMaintainer);
@@ -382,6 +389,7 @@ public abstract class AbstractFileStoreWrite<T> implements FileStoreWrite<T> {
                         partition.copy(),
                         bucket,
                         restoreFiles,
+                        getMaxSequenceNumber(restoreFiles),
                         null,
                         compactExecutor(),
                         deletionVectorsMaintainer);
@@ -432,6 +440,7 @@ public abstract class AbstractFileStoreWrite<T> implements FileStoreWrite<T> {
             BinaryRow partition,
             int bucket,
             List<DataFileMeta> restoreFiles,
+            long restoredMaxSeqNumber,
             @Nullable CommitIncrement restoreIncrement,
             ExecutorService compactExecutor,
             @Nullable DeletionVectorsMaintainer deletionVectorsMaintainer);

@@ -74,6 +74,7 @@ import java.util.stream.Collectors;
 
 import static org.apache.paimon.deletionvectors.DeletionVectorsIndexFile.DELETION_VECTORS_INDEX;
 import static org.apache.paimon.index.HashIndexFile.HASH_INDEX;
+import static org.apache.paimon.partition.PartitionPredicate.createPartitionPredicate;
 import static org.apache.paimon.utils.BranchManager.DEFAULT_MAIN_BRANCH;
 
 /**
@@ -104,6 +105,7 @@ public class FileStoreCommitImpl implements FileStoreCommit {
     private final SchemaManager schemaManager;
     private final String commitUser;
     private final RowType partitionType;
+    private final String partitionDefaultName;
     private final FileStorePathFactory pathFactory;
     private final SnapshotManager snapshotManager;
     private final ManifestFile manifestFile;
@@ -130,6 +132,7 @@ public class FileStoreCommitImpl implements FileStoreCommit {
             SchemaManager schemaManager,
             String commitUser,
             RowType partitionType,
+            String partitionDefaultName,
             FileStorePathFactory pathFactory,
             SnapshotManager snapshotManager,
             ManifestFile.Factory manifestFileFactory,
@@ -148,6 +151,7 @@ public class FileStoreCommitImpl implements FileStoreCommit {
         this.schemaManager = schemaManager;
         this.commitUser = commitUser;
         this.partitionType = partitionType;
+        this.partitionDefaultName = partitionDefaultName;
         this.pathFactory = pathFactory;
         this.snapshotManager = snapshotManager;
         this.manifestFile = manifestFileFactory.create();
@@ -408,7 +412,7 @@ public class FileStoreCommitImpl implements FileStoreCommit {
                                     .map(ManifestEntry::partition)
                                     .distinct()
                                     // partition filter is built from new data's partitions
-                                    .map(p -> PredicateBuilder.equalPartition(p, partitionType))
+                                    .map(p -> createPartitionPredicate(partitionType, p))
                                     .reduce(PredicateBuilder::or)
                                     .orElseThrow(
                                             () ->
@@ -416,7 +420,8 @@ public class FileStoreCommitImpl implements FileStoreCommit {
                                                             "Failed to get dynamic partition filter. This is unexpected."));
                 }
             } else {
-                partitionFilter = PredicateBuilder.partition(partition, partitionType);
+                partitionFilter =
+                        createPartitionPredicate(partition, partitionType, partitionDefaultName);
                 // sanity check, all changes must be done within the given partition
                 if (partitionFilter != null) {
                     for (ManifestEntry entry : appendTableFiles) {
@@ -487,7 +492,10 @@ public class FileStoreCommitImpl implements FileStoreCommit {
 
         Predicate partitionFilter =
                 partitions.stream()
-                        .map(partition -> PredicateBuilder.partition(partition, partitionType))
+                        .map(
+                                partition ->
+                                        createPartitionPredicate(
+                                                partition, partitionType, partitionDefaultName))
                         .reduce(PredicateBuilder::or)
                         .orElseThrow(() -> new RuntimeException("Failed to get partition filter."));
 
@@ -793,7 +801,10 @@ public class FileStoreCommitImpl implements FileStoreCommit {
                 oldMetas.addAll(previousManifests);
                 // read the last snapshot to complete the bucket's offsets when logOffsets does not
                 // contain all buckets
-                latestSnapshot.logOffsets().forEach(logOffsets::putIfAbsent);
+                Map<Integer, Long> latestLogOffsets = latestSnapshot.logOffsets();
+                if (latestLogOffsets != null) {
+                    latestLogOffsets.forEach(logOffsets::putIfAbsent);
+                }
                 Long latestWatermark = latestSnapshot.watermark();
                 if (latestWatermark != null) {
                     currentWatermark =
@@ -1090,7 +1101,7 @@ public class FileStoreCommitImpl implements FileStoreCommit {
                         "   You'll probably see different base commit user and current commit user below.",
                         "   You can use "
                                 + "https://paimon.apache.org/docs/master/maintenance/dedicated-compaction#dedicated-compaction-job"
-                                + "to support multiple writing.",
+                                + " to support multiple writing.",
                         "3. You're recovering from an old savepoint, or you're creating multiple jobs from a savepoint.",
                         "   The job will fail continuously in this scenario to protect metadata from corruption.",
                         "   You can either recover from the latest savepoint, "
