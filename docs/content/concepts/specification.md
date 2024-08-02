@@ -57,7 +57,7 @@ CREATE TABLE my_table (
     f1 STRING
 );
 
-INSERT INTO t VALUES (1, 11, '111');
+INSERT INTO my_table VALUES (1, 11, '111');
 ```
 
 Take a look to the disk:
@@ -157,7 +157,7 @@ The data file meta is:
 2. fileSize: file size.
 3. rowCount: total number of rows (including add & delete) in this file.
 4. minKey: the minimum key of this file.
-5. minKey: the maximum key of this file.
+5. maxKey: the maximum key of this file.
 6. keyStats: the statistics of the key.
 7. valueStats: the statistics of the value.
 8. minSequenceNumber: the minimum sequence number.
