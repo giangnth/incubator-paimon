@@ -18,13 +18,13 @@
 
 package org.apache.paimon.flink.action.cdc.mongodb.utils;
 
+import com.google.gson.Gson;
 import org.bson.BsonBinarySubType;
 import org.bson.UuidRepresentation;
 import org.bson.internal.UuidHelper;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
@@ -40,9 +40,19 @@ import java.util.Map;
 
 /** Utility to format Bson Object. */
 public class MongoDBParseUtils {
-    private static final Logger LOG = LoggerFactory.getLogger(MongoDBParseUtils.class);
+
+    private static final Gson GSON_INSTANCE;
+
+    static {
+        GSON_INSTANCE = new Gson();
+    }
+
+    private MongoDBParseUtils() {}
 
     private static Object parseBsonObject(JSONObject jsonObject) {
+        if (jsonObject == null) {
+            return null;
+        }
         Object result;
         if (jsonObject.has("$date")) {
             Instant instant = Instant.ofEpochMilli(jsonObject.getLong("$date"));
@@ -71,10 +81,10 @@ public class MongoDBParseUtils {
             for (Iterator<String> it = jsonObject.keys(); it.hasNext(); ) {
                 String key = it.next();
                 if (key.contains("$")) {
-                    LOG.warn(String.format("data type: %s is not support yet", key));
+                    throw new JSONException(String.format("data type: %s is not support yet", key));
                 }
             }
-            result = parseDocument(jsonObject.toString());
+            result = parseDocument(jsonObject);
         }
         return result;
     }
@@ -93,34 +103,42 @@ public class MongoDBParseUtils {
         }
     }
 
-    public static Map<String, String> parseDocument(String document) {
-        JSONObject jsonObject = new JSONObject(document);
-        Map<String, String> resultJsonObject = new HashMap<>();
+    private static boolean isNull(Object obj) {
+        return obj == null || "null".equals(obj.toString()) || "".equals(obj.toString())
+                ? true
+                : false;
+    }
+
+    public static Map<String, Object> parseDocument(JSONObject jsonObject) {
+        Map<String, Object> resultJsonObject = new HashMap<>();
         Iterator<String> keys = jsonObject.keys();
         while (keys.hasNext()) {
             String key = keys.next();
             Object value = jsonObject.get(key);
             if (value instanceof JSONObject) {
-                Object result = parseBsonObject((JSONObject) value);
-                resultJsonObject.put(key, result.toString());
+                Object nestedJson = parseBsonObject((JSONObject) value);
+                resultJsonObject.put(key, nestedJson);
+
             } else if (value instanceof JSONArray) {
                 JSONArray jsonArray = (JSONArray) value;
                 List<Object> lstObject = new ArrayList<>();
                 for (int i = 0; i < jsonArray.length(); i++) {
                     Object nestedObject = jsonArray.get(i);
                     if (nestedObject instanceof JSONObject) {
-                        JSONObject nestedJsonObject = (JSONObject) nestedObject;
-                        lstObject.add(parseBsonObject(nestedJsonObject));
+                        lstObject.add(parseBsonObject((JSONObject) nestedObject));
                     } else {
                         lstObject.add(nestedObject);
                     }
                 }
-                resultJsonObject.put(key, lstObject.toString());
+                resultJsonObject.put(key, lstObject);
             } else {
-                resultJsonObject.put(
-                        key, value.toString().equals("null") ? "{}" : value.toString());
+                resultJsonObject.put(key, isNull(value) ? "{}" : value);
             }
         }
         return resultJsonObject;
+    }
+
+    public static String parseDocument(String document) {
+        return GSON_INSTANCE.toJson(parseDocument(new JSONObject(document)));
     }
 }

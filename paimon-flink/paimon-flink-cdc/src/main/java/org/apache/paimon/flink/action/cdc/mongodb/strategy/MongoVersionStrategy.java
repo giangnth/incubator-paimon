@@ -118,7 +118,8 @@ public interface MongoVersionStrategy {
 
     default Map<String, String> parseColumnsFromJsonRecord(
             String record, RowType.Builder rowTypeBuilder, List<ComputedColumn> computedColumns) {
-        Map<String, String> parsedRow = MongoDBParseUtils.parseDocument(record);
+        String evaluate = MongoDBParseUtils.parseDocument(record);
+        Map<String, String> parsedRow = JsonSerdeUtil.parseJsonMap(evaluate, String.class);
         return processParsedData(parsedRow, rowTypeBuilder, computedColumns);
     }
 
