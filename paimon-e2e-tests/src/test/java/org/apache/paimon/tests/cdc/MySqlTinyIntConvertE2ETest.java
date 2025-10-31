@@ -20,7 +20,7 @@ package org.apache.paimon.tests.cdc;
 
 import org.apache.paimon.flink.action.cdc.mysql.MySqlVersion;
 
-import org.apache.paimon.shade.guava30.com.google.common.collect.ImmutableMap;
+import org.apache.paimon.shade.guava32.com.google.common.collect.ImmutableMap;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

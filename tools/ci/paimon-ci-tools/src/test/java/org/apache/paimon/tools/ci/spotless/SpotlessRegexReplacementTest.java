@@ -35,7 +35,7 @@ class SpotlessRegexReplacementTest {
     // Regex patterns from pom.xml spotless configuration
     private static final String GUAVA_SEARCH_REGEX = "import com\\.google\\.common\\.([^;]+);";
     private static final String GUAVA_REPLACEMENT =
-            "import org.apache.paimon.shade.guava30.com.google.common.$1;";
+            "import org.apache.paimon.shade.guava32.com.google.common.$1;";
 
     private static final String JACKSON_SEARCH_REGEX =
             "import com\\.fasterxml\\.jackson\\.([^;]+);";
@@ -47,10 +47,10 @@ class SpotlessRegexReplacementTest {
 
     @ParameterizedTest
     @CsvSource({
-        "'import org.apache.paimon.shade.guava30.com.google.common.collect.Lists;', 'import org.apache.paimon.shade.guava30.com.google.common.collect.Lists;'",
-        "'import org.apache.paimon.shade.guava30.com.google.common.base.Strings;', 'import org.apache.paimon.shade.guava30.com.google.common.base.Strings;'",
-        "'import org.apache.paimon.shade.guava30.com.google.common.util.concurrent.ListenableFuture;', 'import org.apache.paimon.shade.guava30.com.google.common.util.concurrent.ListenableFuture;'",
-        "'import org.apache.paimon.shade.guava30.com.google.common.cache.Cache;', 'import org.apache.paimon.shade.guava30.com.google.common.cache.Cache;'"
+        "'import org.apache.paimon.shade.guava32.com.google.common.collect.Lists;', 'import org.apache.paimon.shade.guava32.com.google.common.collect.Lists;'",
+        "'import org.apache.paimon.shade.guava32.com.google.common.base.Strings;', 'import org.apache.paimon.shade.guava32.com.google.common.base.Strings;'",
+        "'import org.apache.paimon.shade.guava32.com.google.common.util.concurrent.ListenableFuture;', 'import org.apache.paimon.shade.guava32.com.google.common.util.concurrent.ListenableFuture;'",
+        "'import org.apache.paimon.shade.guava32.com.google.common.cache.Cache;', 'import org.apache.paimon.shade.guava32.com.google.common.cache.Cache;'"
     })
     void testGuavaImportReplacementVariations(String input, String expected) {
         String result = GUAVA_PATTERN.matcher(input).replaceAll(GUAVA_REPLACEMENT);
@@ -79,7 +79,7 @@ class SpotlessRegexReplacementTest {
             "import com.google.protobuf.Message;",
             "import com.fasterxml.jackson2.databind.ObjectMapper;",
             "import static com.google.common.collect.Lists.newArrayList;",
-            "// import org.apache.paimon.shade.guava30.com.google.common.collect.Lists;"
+            "// import org.apache.paimon.shade.guava32.com.google.common.collect.Lists;"
         };
 
         for (String importStatement : nonMatchingImports) {

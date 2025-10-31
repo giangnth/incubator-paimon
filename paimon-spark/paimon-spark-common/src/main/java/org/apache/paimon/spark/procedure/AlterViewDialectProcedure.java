@@ -26,7 +26,7 @@ import org.apache.paimon.spark.utils.CatalogUtils;
 import org.apache.paimon.utils.StringUtils;
 import org.apache.paimon.view.ViewChange;
 
-import org.apache.paimon.shade.guava30.com.google.common.collect.ImmutableList;
+import org.apache.paimon.shade.guava32.com.google.common.collect.ImmutableList;
 
 import org.apache.spark.sql.catalyst.InternalRow;
 import org.apache.spark.sql.catalyst.expressions.GenericInternalRow;

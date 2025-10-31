@@ -26,7 +26,7 @@ import org.apache.paimon.spark.utils.CatalogUtils;
 import org.apache.paimon.types.DataField;
 import org.apache.paimon.utils.ParameterUtils;
 
-import org.apache.paimon.shade.guava30.com.google.common.collect.Maps;
+import org.apache.paimon.shade.guava32.com.google.common.collect.Maps;
 
 import org.apache.spark.sql.catalyst.InternalRow;
 import org.apache.spark.sql.connector.catalog.TableCatalog;

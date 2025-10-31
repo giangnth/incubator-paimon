@@ -59,7 +59,7 @@ import java.util.function.Function;
 
 import static org.apache.paimon.CoreOptions.PARTITION_DEFAULT_NAME;
 import static org.apache.paimon.io.DataFileMeta.getMaxSequenceNumber;
-import static org.apache.paimon.shade.guava30.com.google.common.base.MoreObjects.firstNonNull;
+import static org.apache.paimon.shade.guava32.com.google.common.base.MoreObjects.firstNonNull;
 import static org.apache.paimon.utils.FileStorePathFactory.getPartitionComputer;
 
 /**

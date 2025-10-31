@@ -18,8 +18,8 @@
 
 package org.apache.paimon.utils;
 
-import org.apache.paimon.shade.guava30.com.google.common.util.concurrent.ForwardingExecutorService;
-import org.apache.paimon.shade.guava30.com.google.common.util.concurrent.Futures;
+import org.apache.paimon.shade.guava32.com.google.common.util.concurrent.ForwardingExecutorService;
+import org.apache.paimon.shade.guava32.com.google.common.util.concurrent.Futures;
 
 import java.util.Collection;
 import java.util.List;

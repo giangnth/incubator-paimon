@@ -29,7 +29,7 @@ import org.apache.paimon.types.DataType;
 import org.apache.paimon.types.DataTypes;
 import org.apache.paimon.types.RowType;
 
-import org.apache.paimon.shade.guava30.com.google.common.base.Objects;
+import org.apache.paimon.shade.guava32.com.google.common.base.Objects;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.orc.Reader;

@@ -18,7 +18,7 @@
 
 package org.apache.paimon.flink.shuffle;
 
-import org.apache.paimon.shade.guava30.com.google.common.collect.Lists;
+import org.apache.paimon.shade.guava32.com.google.common.collect.Lists;
 
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.junit.jupiter.api.Assertions;

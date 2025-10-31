@@ -22,9 +22,9 @@ import org.apache.paimon.options.Options;
 import org.apache.paimon.rest.exceptions.RESTException;
 import org.apache.paimon.utils.Preconditions;
 
-import org.apache.paimon.shade.guava30.com.google.common.base.Joiner;
-import org.apache.paimon.shade.guava30.com.google.common.collect.ImmutableMap;
-import org.apache.paimon.shade.guava30.com.google.common.collect.Maps;
+import org.apache.paimon.shade.guava32.com.google.common.base.Joiner;
+import org.apache.paimon.shade.guava32.com.google.common.collect.ImmutableMap;
+import org.apache.paimon.shade.guava32.com.google.common.collect.Maps;
 import org.apache.paimon.shade.jackson2.com.fasterxml.jackson.core.JsonProcessingException;
 
 import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;

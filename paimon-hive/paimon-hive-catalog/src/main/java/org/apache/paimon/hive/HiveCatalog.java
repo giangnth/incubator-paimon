@@ -56,7 +56,7 @@ import org.apache.paimon.utils.PartitionPathUtils;
 import org.apache.paimon.view.View;
 import org.apache.paimon.view.ViewImpl;
 
-import org.apache.paimon.shade.guava30.com.google.common.collect.Lists;
+import org.apache.paimon.shade.guava32.com.google.common.collect.Lists;
 
 import org.apache.flink.table.hive.LegacyHiveClasses;
 import org.apache.hadoop.conf.Configuration;

@@ -33,8 +33,8 @@ import org.apache.paimon.table.Table;
 import org.apache.paimon.types.DataField;
 import org.apache.paimon.types.DataTypes;
 
-import org.apache.paimon.shade.guava30.com.google.common.collect.Lists;
-import org.apache.paimon.shade.guava30.com.google.common.collect.Maps;
+import org.apache.paimon.shade.guava32.com.google.common.collect.Lists;
+import org.apache.paimon.shade.guava32.com.google.common.collect.Maps;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hive.metastore.HiveMetaHook;

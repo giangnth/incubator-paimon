@@ -18,8 +18,8 @@
 
 package org.apache.paimon.utils;
 
-import org.apache.paimon.shade.guava30.com.google.common.collect.Iterators;
-import org.apache.paimon.shade.guava30.com.google.common.collect.Lists;
+import org.apache.paimon.shade.guava32.com.google.common.collect.Iterators;
+import org.apache.paimon.shade.guava32.com.google.common.collect.Lists;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;

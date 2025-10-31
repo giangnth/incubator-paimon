@@ -31,7 +31,7 @@ import org.apache.paimon.predicate.Predicate;
 import org.apache.paimon.types.RowType;
 import org.apache.paimon.utils.BiFilter;
 
-import org.apache.paimon.shade.guava30.com.google.common.collect.ImmutableSet;
+import org.apache.paimon.shade.guava32.com.google.common.collect.ImmutableSet;
 
 import javax.annotation.concurrent.ThreadSafe;
 

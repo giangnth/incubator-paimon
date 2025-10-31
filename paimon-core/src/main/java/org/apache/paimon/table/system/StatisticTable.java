@@ -45,7 +45,7 @@ import org.apache.paimon.utils.JsonSerdeUtil;
 import org.apache.paimon.utils.ProjectedRow;
 import org.apache.paimon.utils.SerializationUtils;
 
-import org.apache.paimon.shade.guava30.com.google.common.collect.Iterators;
+import org.apache.paimon.shade.guava32.com.google.common.collect.Iterators;
 
 import java.util.Arrays;
 import java.util.Collections;

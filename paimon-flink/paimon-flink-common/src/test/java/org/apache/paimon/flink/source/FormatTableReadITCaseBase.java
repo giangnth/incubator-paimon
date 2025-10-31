@@ -38,7 +38,7 @@ import org.apache.paimon.rest.RESTToken;
 import org.apache.paimon.types.DataTypes;
 import org.apache.paimon.types.RowType;
 
-import org.apache.paimon.shade.guava30.com.google.common.collect.ImmutableMap;
+import org.apache.paimon.shade.guava32.com.google.common.collect.ImmutableMap;
 
 import org.apache.flink.types.Row;
 import org.junit.jupiter.api.Test;

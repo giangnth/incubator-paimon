@@ -20,8 +20,8 @@ package org.apache.paimon.catalog;
 
 import org.apache.paimon.utils.Pair;
 
-import org.apache.paimon.shade.guava30.com.google.common.collect.Maps;
-import org.apache.paimon.shade.guava30.com.google.common.collect.Sets;
+import org.apache.paimon.shade.guava32.com.google.common.collect.Maps;
+import org.apache.paimon.shade.guava32.com.google.common.collect.Sets;
 
 import java.util.List;
 import java.util.Map;

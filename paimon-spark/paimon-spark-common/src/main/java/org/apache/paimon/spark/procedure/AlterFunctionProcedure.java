@@ -25,7 +25,7 @@ import org.apache.paimon.spark.catalog.WithPaimonCatalog;
 import org.apache.paimon.spark.utils.CatalogUtils;
 import org.apache.paimon.utils.JsonSerdeUtil;
 
-import org.apache.paimon.shade.guava30.com.google.common.collect.ImmutableList;
+import org.apache.paimon.shade.guava32.com.google.common.collect.ImmutableList;
 
 import org.apache.spark.sql.catalyst.InternalRow;
 import org.apache.spark.sql.connector.catalog.TableCatalog;

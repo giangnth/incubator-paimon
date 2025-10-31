@@ -21,7 +21,7 @@ package org.apache.paimon.partition.actions;
 import org.apache.paimon.fs.Path;
 import org.apache.paimon.table.PartitionHandler;
 
-import org.apache.paimon.shade.guava30.com.google.common.collect.Iterators;
+import org.apache.paimon.shade.guava32.com.google.common.collect.Iterators;
 
 import java.io.IOException;
 import java.util.Collections;

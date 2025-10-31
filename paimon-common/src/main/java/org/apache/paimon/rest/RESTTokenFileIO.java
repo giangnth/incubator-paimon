@@ -35,8 +35,8 @@ import org.apache.paimon.utils.ThreadUtils;
 import org.apache.paimon.shade.caffeine2.com.github.benmanes.caffeine.cache.Cache;
 import org.apache.paimon.shade.caffeine2.com.github.benmanes.caffeine.cache.Caffeine;
 import org.apache.paimon.shade.caffeine2.com.github.benmanes.caffeine.cache.Scheduler;
-import org.apache.paimon.shade.guava30.com.google.common.collect.ImmutableMap;
-import org.apache.paimon.shade.guava30.com.google.common.collect.Maps;
+import org.apache.paimon.shade.guava32.com.google.common.collect.ImmutableMap;
+import org.apache.paimon.shade.guava32.com.google.common.collect.Maps;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

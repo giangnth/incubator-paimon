@@ -52,7 +52,7 @@ import org.apache.paimon.types.TinyIntType;
 import org.apache.paimon.types.VarBinaryType;
 import org.apache.paimon.types.VarCharType;
 
-import org.apache.paimon.shade.guava30.com.google.common.collect.ImmutableMap;
+import org.apache.paimon.shade.guava32.com.google.common.collect.ImmutableMap;
 
 import org.apache.spark.sql.SparkSession;
 import org.assertj.core.api.Assertions;

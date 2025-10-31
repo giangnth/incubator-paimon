@@ -21,7 +21,7 @@ package org.apache.paimon.spark.catalog.functions
 import org.apache.paimon.CoreOptions.BucketFunctionType
 import org.apache.paimon.bucket
 import org.apache.paimon.data.serializer.InternalRowSerializer
-import org.apache.paimon.shade.guava30.com.google.common.collect.{ImmutableMap, ImmutableSet}
+import org.apache.paimon.shade.guava32.com.google.common.collect.{ImmutableMap, ImmutableSet}
 import org.apache.paimon.spark.SparkInternalRowWrapper
 import org.apache.paimon.spark.SparkTypeUtils.toPaimonRowType
 import org.apache.paimon.spark.catalog.functions.PaimonFunctions._

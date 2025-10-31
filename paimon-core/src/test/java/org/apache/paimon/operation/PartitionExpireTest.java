@@ -47,7 +47,7 @@ import org.apache.paimon.types.RowType;
 import org.apache.paimon.types.VarCharType;
 import org.apache.paimon.utils.SnapshotManager;
 
-import org.apache.paimon.shade.guava30.com.google.common.collect.Streams;
+import org.apache.paimon.shade.guava32.com.google.common.collect.Streams;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

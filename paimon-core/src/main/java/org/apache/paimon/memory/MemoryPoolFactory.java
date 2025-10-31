@@ -20,7 +20,7 @@ package org.apache.paimon.memory;
 
 import org.apache.paimon.annotation.VisibleForTesting;
 
-import org.apache.paimon.shade.guava30.com.google.common.collect.Iterators;
+import org.apache.paimon.shade.guava32.com.google.common.collect.Iterators;
 
 import java.util.List;
 

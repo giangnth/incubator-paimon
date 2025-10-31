@@ -30,8 +30,8 @@ import org.apache.paimon.table.sink.CommitCallback;
 import org.apache.paimon.table.sink.CommitMessage;
 import org.apache.paimon.utils.InternalRowPartitionComputer;
 
-import org.apache.paimon.shade.guava30.com.google.common.cache.Cache;
-import org.apache.paimon.shade.guava30.com.google.common.cache.CacheBuilder;
+import org.apache.paimon.shade.guava32.com.google.common.cache.Cache;
+import org.apache.paimon.shade.guava32.com.google.common.cache.CacheBuilder;
 
 import java.time.Duration;
 import java.util.ArrayList;

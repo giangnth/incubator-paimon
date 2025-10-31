@@ -49,7 +49,7 @@ import org.apache.paimon.types.RowType;
 import org.apache.paimon.types.VariantType;
 import org.apache.paimon.utils.StringUtils;
 
-import org.apache.paimon.shade.guava30.com.google.common.collect.ImmutableList;
+import org.apache.paimon.shade.guava32.com.google.common.collect.ImmutableList;
 
 import org.apache.parquet.io.ColumnIO;
 import org.apache.parquet.io.GroupColumnIO;

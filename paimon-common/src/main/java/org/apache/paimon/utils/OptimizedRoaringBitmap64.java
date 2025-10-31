@@ -24,7 +24,7 @@ package org.apache.paimon.utils;
 
 import org.apache.paimon.annotation.VisibleForTesting;
 
-import org.apache.paimon.shade.guava30.com.google.common.collect.Lists;
+import org.apache.paimon.shade.guava32.com.google.common.collect.Lists;
 
 import org.roaringbitmap.RoaringBitmap;
 

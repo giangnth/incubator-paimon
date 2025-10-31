@@ -34,7 +34,7 @@ import org.apache.paimon.table.TableTestBase;
 import org.apache.paimon.types.DataTypes;
 import org.apache.paimon.utils.BranchManager;
 
-import org.apache.paimon.shade.guava30.com.google.common.collect.Multimap;
+import org.apache.paimon.shade.guava32.com.google.common.collect.Multimap;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

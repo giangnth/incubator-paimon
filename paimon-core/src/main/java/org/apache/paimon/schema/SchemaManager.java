@@ -51,11 +51,11 @@ import org.apache.paimon.utils.Preconditions;
 import org.apache.paimon.utils.SnapshotManager;
 import org.apache.paimon.utils.StringUtils;
 
-import org.apache.paimon.shade.guava30.com.google.common.collect.FluentIterable;
-import org.apache.paimon.shade.guava30.com.google.common.collect.ImmutableList;
-import org.apache.paimon.shade.guava30.com.google.common.collect.Iterables;
-import org.apache.paimon.shade.guava30.com.google.common.collect.Maps;
-import org.apache.paimon.shade.guava30.com.google.common.collect.Streams;
+import org.apache.paimon.shade.guava32.com.google.common.collect.FluentIterable;
+import org.apache.paimon.shade.guava32.com.google.common.collect.ImmutableList;
+import org.apache.paimon.shade.guava32.com.google.common.collect.Iterables;
+import org.apache.paimon.shade.guava32.com.google.common.collect.Maps;
+import org.apache.paimon.shade.guava32.com.google.common.collect.Streams;
 
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;

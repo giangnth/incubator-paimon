@@ -61,10 +61,10 @@ import org.apache.paimon.utils.SnapshotManager;
 import org.apache.paimon.view.View;
 import org.apache.paimon.view.ViewChange;
 
-import org.apache.paimon.shade.guava30.com.google.common.collect.ImmutableList;
-import org.apache.paimon.shade.guava30.com.google.common.collect.ImmutableMap;
-import org.apache.paimon.shade.guava30.com.google.common.collect.Lists;
-import org.apache.paimon.shade.guava30.com.google.common.collect.Maps;
+import org.apache.paimon.shade.guava32.com.google.common.collect.ImmutableList;
+import org.apache.paimon.shade.guava32.com.google.common.collect.ImmutableMap;
+import org.apache.paimon.shade.guava32.com.google.common.collect.Lists;
+import org.apache.paimon.shade.guava32.com.google.common.collect.Maps;
 import org.apache.paimon.shade.org.apache.commons.lang3.StringUtils;
 
 import org.apache.commons.io.FileUtils;

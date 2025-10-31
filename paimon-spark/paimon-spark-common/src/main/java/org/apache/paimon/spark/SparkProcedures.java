@@ -51,7 +51,7 @@ import org.apache.paimon.spark.procedure.RollbackToTimestampProcedure;
 import org.apache.paimon.spark.procedure.RollbackToWatermarkProcedure;
 import org.apache.paimon.spark.procedure.TriggerTagAutomaticCreationProcedure;
 
-import org.apache.paimon.shade.guava30.com.google.common.collect.ImmutableMap;
+import org.apache.paimon.shade.guava32.com.google.common.collect.ImmutableMap;
 
 import java.util.Locale;
 import java.util.Map;

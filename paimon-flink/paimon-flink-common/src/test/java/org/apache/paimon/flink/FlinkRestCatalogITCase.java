@@ -25,7 +25,7 @@ import org.apache.paimon.rest.RESTCatalogOptions;
 import org.apache.paimon.rest.RESTTestFileIO;
 import org.apache.paimon.rest.auth.AuthProviderEnum;
 
-import org.apache.paimon.shade.guava30.com.google.common.collect.ImmutableMap;
+import org.apache.paimon.shade.guava32.com.google.common.collect.ImmutableMap;
 
 import org.apache.flink.table.api.DataTypes;
 import org.apache.flink.table.api.Schema;

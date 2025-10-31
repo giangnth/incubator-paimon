@@ -23,7 +23,7 @@ import org.apache.paimon.flink.action.CloneAction;
 import org.apache.paimon.hive.TestHiveMetastore;
 import org.apache.paimon.utils.StringUtils;
 
-import org.apache.paimon.shade.guava30.com.google.common.collect.ImmutableList;
+import org.apache.paimon.shade.guava32.com.google.common.collect.ImmutableList;
 
 import org.apache.flink.table.api.TableEnvironment;
 import org.apache.flink.types.Row;

@@ -20,7 +20,7 @@ package org.apache.paimon.rest.auth;
 
 import org.apache.paimon.utils.StringUtils;
 
-import org.apache.paimon.shade.guava30.com.google.common.base.Joiner;
+import org.apache.paimon.shade.guava32.com.google.common.base.Joiner;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;

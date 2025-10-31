@@ -27,7 +27,7 @@ import org.apache.paimon.types.DataField;
 import org.apache.paimon.types.DataTypes;
 import org.apache.paimon.types.RowType;
 
-import org.apache.paimon.shade.guava30.com.google.common.primitives.UnsignedBytes;
+import org.apache.paimon.shade.guava32.com.google.common.primitives.UnsignedBytes;
 
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.streaming.api.datastream.DataStream;

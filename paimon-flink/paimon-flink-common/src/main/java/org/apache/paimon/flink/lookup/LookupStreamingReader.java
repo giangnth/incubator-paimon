@@ -35,7 +35,7 @@ import org.apache.paimon.utils.Filter;
 import org.apache.paimon.utils.FunctionWithIOException;
 import org.apache.paimon.utils.TypeUtils;
 
-import org.apache.paimon.shade.guava30.com.google.common.primitives.Ints;
+import org.apache.paimon.shade.guava32.com.google.common.primitives.Ints;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

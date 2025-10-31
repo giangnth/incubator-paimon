@@ -22,7 +22,7 @@ import org.apache.paimon.options.MemorySize;
 
 import org.apache.paimon.shade.caffeine2.com.github.benmanes.caffeine.cache.Caffeine;
 import org.apache.paimon.shade.caffeine2.com.github.benmanes.caffeine.cache.RemovalCause;
-import org.apache.paimon.shade.guava30.com.google.common.cache.RemovalNotification;
+import org.apache.paimon.shade.guava32.com.google.common.cache.RemovalNotification;
 
 /** Cache builder builds cache from cache type. */
 public abstract class CacheBuilder {
@@ -69,7 +69,7 @@ public abstract class CacheBuilder {
         @Override
         public Cache build() {
             return new GuavaCache(
-                    org.apache.paimon.shade.guava30.com.google.common.cache.CacheBuilder
+                    org.apache.paimon.shade.guava32.com.google.common.cache.CacheBuilder
                             .newBuilder()
                             .weigher(CacheBuilder::weigh)
                             // The concurrency level determines the number of segment caches in

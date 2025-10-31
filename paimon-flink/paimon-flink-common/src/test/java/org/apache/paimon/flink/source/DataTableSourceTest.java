@@ -34,7 +34,7 @@ import org.apache.paimon.table.sink.TableCommitImpl;
 import org.apache.paimon.table.system.ReadOptimizedTable;
 import org.apache.paimon.types.DataTypes;
 
-import org.apache.paimon.shade.guava30.com.google.common.collect.ImmutableMap;
+import org.apache.paimon.shade.guava32.com.google.common.collect.ImmutableMap;
 
 import org.apache.flink.api.common.RuntimeExecutionMode;
 import org.apache.flink.api.common.typeinfo.TypeInformation;

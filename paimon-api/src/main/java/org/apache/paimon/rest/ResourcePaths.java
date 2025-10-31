@@ -20,7 +20,7 @@ package org.apache.paimon.rest;
 
 import org.apache.paimon.options.Options;
 
-import org.apache.paimon.shade.guava30.com.google.common.base.Joiner;
+import org.apache.paimon.shade.guava32.com.google.common.base.Joiner;
 
 import static org.apache.paimon.rest.RESTUtil.encodeString;
 

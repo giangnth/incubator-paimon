@@ -23,7 +23,7 @@ import org.apache.paimon.catalog.Identifier;
 import org.apache.paimon.function.FunctionImpl;
 import org.apache.paimon.utils.ParameterUtils;
 
-import org.apache.paimon.shade.guava30.com.google.common.collect.Maps;
+import org.apache.paimon.shade.guava32.com.google.common.collect.Maps;
 
 import org.apache.flink.table.annotation.ArgumentHint;
 import org.apache.flink.table.annotation.DataTypeHint;

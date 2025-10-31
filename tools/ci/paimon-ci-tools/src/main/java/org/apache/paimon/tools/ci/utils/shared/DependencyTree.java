@@ -18,7 +18,7 @@
 
 package org.apache.paimon.tools.ci.utils.shared;
 
-import org.apache.paimon.shade.guava30.com.google.common.graph.Traverser;
+import org.apache.paimon.shade.guava32.com.google.common.graph.Traverser;
 
 import javax.annotation.Nullable;
 

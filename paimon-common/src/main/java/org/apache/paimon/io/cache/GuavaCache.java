@@ -26,12 +26,12 @@ import java.util.function.Function;
 
 /** Guava cache implementation. */
 public class GuavaCache implements Cache {
-    private final org.apache.paimon.shade.guava30.com.google.common.cache.Cache<
+    private final org.apache.paimon.shade.guava32.com.google.common.cache.Cache<
                     CacheKey, CacheValue>
             cache;
 
     public GuavaCache(
-            org.apache.paimon.shade.guava30.com.google.common.cache.Cache<CacheKey, CacheValue>
+            org.apache.paimon.shade.guava32.com.google.common.cache.Cache<CacheKey, CacheValue>
                     cache) {
         this.cache = cache;
     }

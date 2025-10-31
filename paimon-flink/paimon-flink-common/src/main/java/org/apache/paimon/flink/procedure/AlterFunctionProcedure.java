@@ -23,7 +23,7 @@ import org.apache.paimon.catalog.Identifier;
 import org.apache.paimon.function.FunctionChange;
 import org.apache.paimon.utils.JsonSerdeUtil;
 
-import org.apache.paimon.shade.guava30.com.google.common.collect.ImmutableList;
+import org.apache.paimon.shade.guava32.com.google.common.collect.ImmutableList;
 
 import org.apache.flink.table.annotation.ArgumentHint;
 import org.apache.flink.table.annotation.DataTypeHint;

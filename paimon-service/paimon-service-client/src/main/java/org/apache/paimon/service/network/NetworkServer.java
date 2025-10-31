@@ -22,7 +22,7 @@ import org.apache.paimon.service.network.messages.MessageBody;
 import org.apache.paimon.utils.ExecutorUtils;
 import org.apache.paimon.utils.Preconditions;
 
-import org.apache.paimon.shade.guava30.com.google.common.util.concurrent.ThreadFactoryBuilder;
+import org.apache.paimon.shade.guava32.com.google.common.util.concurrent.ThreadFactoryBuilder;
 import org.apache.paimon.shade.netty4.io.netty.bootstrap.ServerBootstrap;
 import org.apache.paimon.shade.netty4.io.netty.channel.ChannelFuture;
 import org.apache.paimon.shade.netty4.io.netty.channel.ChannelInitializer;

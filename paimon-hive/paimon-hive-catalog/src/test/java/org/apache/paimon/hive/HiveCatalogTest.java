@@ -34,8 +34,8 @@ import org.apache.paimon.types.DataTypes;
 import org.apache.paimon.utils.CommonTestUtils;
 import org.apache.paimon.utils.HadoopUtils;
 
-import org.apache.paimon.shade.guava30.com.google.common.collect.ImmutableMap;
-import org.apache.paimon.shade.guava30.com.google.common.collect.Lists;
+import org.apache.paimon.shade.guava32.com.google.common.collect.ImmutableMap;
+import org.apache.paimon.shade.guava32.com.google.common.collect.Lists;
 
 import org.apache.hadoop.hive.conf.HiveConf;
 import org.apache.hadoop.hive.metastore.IMetaStoreClient;

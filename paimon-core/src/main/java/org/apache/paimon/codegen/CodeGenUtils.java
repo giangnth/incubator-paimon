@@ -23,8 +23,8 @@ import org.apache.paimon.types.DataType;
 import org.apache.paimon.types.RowType;
 import org.apache.paimon.utils.Pair;
 
-import org.apache.paimon.shade.guava30.com.google.common.cache.Cache;
-import org.apache.paimon.shade.guava30.com.google.common.cache.CacheBuilder;
+import org.apache.paimon.shade.guava32.com.google.common.cache.Cache;
+import org.apache.paimon.shade.guava32.com.google.common.cache.CacheBuilder;
 
 import java.util.Arrays;
 import java.util.List;

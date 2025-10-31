@@ -41,7 +41,7 @@ import java.util.Optional;
 import java.util.SortedMap;
 
 import static org.apache.paimon.Snapshot.FIRST_SNAPSHOT_ID;
-import static org.apache.paimon.shade.guava30.com.google.common.base.MoreObjects.firstNonNull;
+import static org.apache.paimon.shade.guava32.com.google.common.base.MoreObjects.firstNonNull;
 import static org.apache.paimon.utils.Preconditions.checkState;
 
 /** A manager to create tags automatically. */

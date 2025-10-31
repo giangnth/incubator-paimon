@@ -35,8 +35,8 @@ import org.apache.paimon.types.DataType;
 import org.apache.paimon.types.DataTypes;
 import org.apache.paimon.types.RowType;
 
-import org.apache.paimon.shade.guava30.com.google.common.collect.Lists;
-import org.apache.paimon.shade.guava30.com.google.common.collect.Sets;
+import org.apache.paimon.shade.guava32.com.google.common.collect.Lists;
+import org.apache.paimon.shade.guava32.com.google.common.collect.Sets;
 
 import com.klarna.hiverunner.HiveShell;
 import com.klarna.hiverunner.annotations.HiveSQL;

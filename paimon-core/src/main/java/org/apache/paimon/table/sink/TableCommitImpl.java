@@ -39,8 +39,8 @@ import org.apache.paimon.utils.ExecutorThreadFactory;
 import org.apache.paimon.utils.FileOperationThreadPool;
 import org.apache.paimon.utils.IndexFilePathFactories;
 
-import org.apache.paimon.shade.guava30.com.google.common.collect.Lists;
-import org.apache.paimon.shade.guava30.com.google.common.util.concurrent.MoreExecutors;
+import org.apache.paimon.shade.guava32.com.google.common.collect.Lists;
+import org.apache.paimon.shade.guava32.com.google.common.util.concurrent.MoreExecutors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

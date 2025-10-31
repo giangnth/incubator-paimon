@@ -24,7 +24,7 @@ import org.apache.paimon.service.network.stats.ServiceRequestStats;
 import org.apache.paimon.utils.FutureUtils;
 import org.apache.paimon.utils.Preconditions;
 
-import org.apache.paimon.shade.guava30.com.google.common.util.concurrent.ThreadFactoryBuilder;
+import org.apache.paimon.shade.guava32.com.google.common.util.concurrent.ThreadFactoryBuilder;
 import org.apache.paimon.shade.netty4.io.netty.bootstrap.Bootstrap;
 import org.apache.paimon.shade.netty4.io.netty.buffer.ByteBufAllocator;
 import org.apache.paimon.shade.netty4.io.netty.channel.ChannelFutureListener;

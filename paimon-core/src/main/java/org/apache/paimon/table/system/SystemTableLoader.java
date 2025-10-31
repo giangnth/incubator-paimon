@@ -21,7 +21,7 @@ package org.apache.paimon.table.system;
 import org.apache.paimon.table.FileStoreTable;
 import org.apache.paimon.table.Table;
 
-import org.apache.paimon.shade.guava30.com.google.common.collect.ImmutableMap;
+import org.apache.paimon.shade.guava32.com.google.common.collect.ImmutableMap;
 
 import javax.annotation.Nullable;
 

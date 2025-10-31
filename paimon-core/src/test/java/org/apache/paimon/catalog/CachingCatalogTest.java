@@ -42,7 +42,7 @@ import org.apache.paimon.types.VarCharType;
 import org.apache.paimon.utils.FakeTicker;
 
 import org.apache.paimon.shade.caffeine2.com.github.benmanes.caffeine.cache.Cache;
-import org.apache.paimon.shade.guava30.com.google.common.collect.Lists;
+import org.apache.paimon.shade.guava32.com.google.common.collect.Lists;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

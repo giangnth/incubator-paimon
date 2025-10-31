@@ -20,7 +20,7 @@ package org.apache.paimon.flink.source;
 
 import org.apache.paimon.flink.CatalogITCaseBase;
 
-import org.apache.paimon.shade.guava30.com.google.common.collect.ImmutableList;
+import org.apache.paimon.shade.guava32.com.google.common.collect.ImmutableList;
 
 import org.apache.flink.table.api.ExplainFormat;
 import org.apache.flink.table.connector.source.abilities.SupportsProjectionPushDown;

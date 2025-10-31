@@ -24,8 +24,8 @@ import org.apache.paimon.catalog.Identifier;
 import org.apache.paimon.factories.FactoryUtil;
 import org.apache.paimon.types.RowType;
 
-import org.apache.paimon.shade.guava30.com.google.common.base.Supplier;
-import org.apache.paimon.shade.guava30.com.google.common.base.Suppliers;
+import org.apache.paimon.shade.guava32.com.google.common.base.Supplier;
+import org.apache.paimon.shade.guava32.com.google.common.base.Suppliers;
 
 /** Factory to create a {@link PartitionExpireStrategy}. */
 public interface PartitionExpireStrategyFactory {

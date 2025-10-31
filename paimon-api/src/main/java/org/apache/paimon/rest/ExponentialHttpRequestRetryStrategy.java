@@ -20,7 +20,7 @@ package org.apache.paimon.rest;
 
 import org.apache.paimon.utils.Preconditions;
 
-import org.apache.paimon.shade.guava30.com.google.common.collect.ImmutableSet;
+import org.apache.paimon.shade.guava32.com.google.common.collect.ImmutableSet;
 
 import org.apache.hc.client5.http.HttpRequestRetryStrategy;
 import org.apache.hc.client5.http.utils.DateUtils;

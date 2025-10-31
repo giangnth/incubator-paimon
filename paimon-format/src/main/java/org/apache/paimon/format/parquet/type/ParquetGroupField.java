@@ -20,7 +20,7 @@ package org.apache.paimon.format.parquet.type;
 
 import org.apache.paimon.types.DataType;
 
-import org.apache.paimon.shade.guava30.com.google.common.collect.ImmutableList;
+import org.apache.paimon.shade.guava32.com.google.common.collect.ImmutableList;
 
 import java.util.List;
 
