@@ -61,6 +61,7 @@ public class JsonSerdeUtil {
         OBJECT_MAPPER_INSTANCE = new ObjectMapper();
         OBJECT_MAPPER_INSTANCE.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         OBJECT_MAPPER_INSTANCE.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        OBJECT_MAPPER_INSTANCE.configure(SerializationFeature.WRITE_BIGDECIMAL_AS_PLAIN, true);
         OBJECT_MAPPER_INSTANCE.registerModule(createPaimonJacksonModule());
         OBJECT_MAPPER_INSTANCE.registerModule(new JavaTimeModule());
     }

@@ -25,5 +25,6 @@ public enum SchemaAcquisitionMode {
     SPECIFIED,
 
     /** Represents a mode where the schema is determined dynamically based on the data. */
-    DYNAMIC
+    DYNAMIC,
+    PARSE_COLUMN
 }

@@ -98,6 +98,12 @@ under the License.
 
         <dependency>
             <groupId>org.apache.paimon</groupId>
+            <artifactId>paimon-shade-guava-32</artifactId>
+            <version>${paimon.shade.guava.version}-${paimon.shade.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.paimon</groupId>
             <artifactId>paimon-s3</artifactId>
             <version>${project.version}</version>
             <type>test-jar</type>

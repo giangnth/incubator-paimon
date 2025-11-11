@@ -20,6 +20,7 @@ package org.apache.paimon.flink.action.cdc.mongodb.strategy;
 
 import org.apache.paimon.flink.action.cdc.ComputedColumn;
 import org.apache.paimon.flink.action.cdc.mongodb.SchemaAcquisitionMode;
+import org.apache.paimon.flink.action.cdc.mongodb.utils.MongoDBParseUtils;
 import org.apache.paimon.flink.sink.cdc.CdcSchema;
 import org.apache.paimon.flink.sink.cdc.RichCdcMultiplexRecord;
 import org.apache.paimon.types.DataTypes;
@@ -107,9 +108,18 @@ public interface MongoVersionStrategy {
                         schemaBuilder);
             case DYNAMIC:
                 return parseAndTypeJsonRow(document.toString(), schemaBuilder, computedColumns);
+            case PARSE_COLUMN:
+                return parseColumnsFromJsonRecord(
+                        document.toString(), schemaBuilder, computedColumns);
             default:
                 throw new RuntimeException("Unsupported extraction mode: " + mode);
         }
+    }
+
+    default Map<String, String> parseColumnsFromJsonRecord(
+            String record, CdcSchema.Builder schemaBuilder, List<ComputedColumn> computedColumns) {
+        Map<String, String> parsedRow = MongoDBParseUtils.parseDocument(record);
+        return processParsedData(parsedRow, schemaBuilder, computedColumns);
     }
 
     /** Parses and types a JSON row based on the given parameters. */

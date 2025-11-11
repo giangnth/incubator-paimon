@@ -715,4 +715,8 @@ public class DateTimeUtils {
         buf.append((char) ('0' + (i / 10) % 10));
         return buf.append((char) ('0' + i % 10));
     }
+
+    public static String formatInstant(Instant idt) {
+        return DEFAULT_TIMESTAMP_FORMATTER.format(idt);
+    }
 }

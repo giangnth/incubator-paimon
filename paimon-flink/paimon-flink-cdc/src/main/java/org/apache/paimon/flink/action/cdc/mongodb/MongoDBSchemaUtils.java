@@ -91,6 +91,7 @@ public class MongoDBSchemaUtils {
                                 .split(",");
 
                 return createMongodbSchema(columnNames);
+            case PARSE_COLUMN:
             case DYNAMIC:
                 String hosts =
                         Objects.requireNonNull(

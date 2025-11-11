@@ -183,7 +183,14 @@ public class MySqlActionUtils {
         mySqlConfig
                 .getOptional(MySqlSourceOptions.SCAN_INCREMENTAL_SNAPSHOT_BACKFILL_SKIP)
                 .ifPresent(sourceBuilder::skipSnapshotBackfill);
-
+        // MOBIO CONFIGURATION
+        mySqlConfig
+                .getOptional(MySqlSourceOptions.MOBIO_INCREMENTAL)
+                .ifPresent(sourceBuilder::mobioIncrementalSnapshot);
+        mySqlConfig
+                .getOptional(MySqlSourceOptions.SCAN_INCREMENTAL_SNAPSHOT_CHUNK_KEY_VALUE)
+                .ifPresent(sourceBuilder::chunkKeyValue);
+        // END MOBIO CONFIGURATION
         String startupMode = mySqlConfig.get(MySqlSourceOptions.SCAN_STARTUP_MODE);
         // see
         // https://github.com/apache/flink-cdc/blob/master/flink-cdc-connect/flink-cdc-source-connectors/flink-connector-mysql-cdc/src/main/java/org/apache/flink/cdc/connectors/mysql/table/MySqlTableSourceFactory.java#L197
