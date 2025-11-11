@@ -50,6 +50,7 @@ import org.apache.paimon.predicate.PredicateBuilder;
 import org.apache.paimon.predicate.PredicateProjectionConverter;
 import org.apache.paimon.table.BucketMode;
 import org.apache.paimon.table.FileStoreTable;
+import org.apache.paimon.table.sink.CommitMessage;
 import org.apache.paimon.table.source.DataSplit;
 import org.apache.paimon.types.RowType;
 import org.apache.paimon.utils.InternalRowPartitionComputer;
@@ -250,25 +251,21 @@ public class CompactAction extends TableActionBase {
                             + "Please set '--force_start_flink_job true' if you need forcibly start a flink job.");
             return false;
         }
-        Map<BinaryRow, DataSplit[]> partitionSplits =
-                compactUnits.entrySet().stream()
-                        .collect(
-                                Collectors.toMap(
-                                        Map.Entry::getKey,
-                                        entry ->
-                                                incrementalClusterManager
-                                                        .toSplits(
-                                                                entry.getKey(),
-                                                                entry.getValue().files())
-                                                        .toArray(new DataSplit[0])));
+
+        Map<BinaryRow, Pair<List<DataSplit>, CommitMessage>> partitionSplits =
+                incrementalClusterManager.toSplitsAndRewriteDvFiles(compactUnits);
 
         // 2. read，sort and write in partition
         List<DataStream<Committable>> dataStreams = new ArrayList<>();
 
-        for (Map.Entry<BinaryRow, DataSplit[]> entry : partitionSplits.entrySet()) {
-            DataSplit[] splits = entry.getValue();
+        for (Map.Entry<BinaryRow, Pair<List<DataSplit>, CommitMessage>> entry :
+                partitionSplits.entrySet()) {
+            BinaryRow partition = entry.getKey();
+            List<DataSplit> splits = entry.getValue().getKey();
+            CommitMessage dvCommitMessage = entry.getValue().getRight();
             LinkedHashMap<String, String> partitionSpec =
-                    partitionComputer.generatePartValues(entry.getKey());
+                    partitionComputer.generatePartValues(partition);
+
             // 2.1 generate source for current partition
             Pair<DataStream<RowData>, DataStream<Committable>> sourcePair =
                     IncrementalClusterSplitSource.buildSource(
@@ -276,6 +273,7 @@ public class CompactAction extends TableActionBase {
                             table,
                             partitionSpec,
                             splits,
+                            dvCommitMessage,
                             options.get(FlinkConnectorOptions.SCAN_PARALLELISM));
 
             // 2.2 cluster in partition
