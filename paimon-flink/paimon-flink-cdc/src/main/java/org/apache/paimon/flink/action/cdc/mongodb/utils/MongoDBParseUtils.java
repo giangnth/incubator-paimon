@@ -50,14 +50,20 @@ public class MongoDBParseUtils {
 
     public static Map<String, String> parseDocument(String value) {
         JsonNode jsonNode = JsonSerdeUtil.fromJson(value, new TypeReference<JsonNode>() {});
-        String table = jsonNode.get("ns").get("coll").asText();
-        String op = jsonNode.get("operationType").asText();
-        Map<String, Object> rowData = transformDocument(jsonNode.get("fullDocument"));
+        Map<String, Object> transformValue = transformDocument(jsonNode);
         Map<String, String> result = new HashMap<>();
-        result.put("table", table);
-        result.put("op", op);
-        result.put("fullDocument", JsonSerdeUtil.toJson(rowData));
+        transformValue.forEach(
+                (key, value1) -> {
+                    result.put(key, convertValueToString(value1));
+                });
         return result;
+    }
+
+    private static String convertValueToString(Object value) {
+        if (value instanceof Map || value instanceof List) {
+            return JsonSerdeUtil.toFlatJson(value);
+        }
+        return value != null ? String.valueOf(value) : null;
     }
 
     private static Map<String, Object> transformDocument(JsonNode jsonNode)

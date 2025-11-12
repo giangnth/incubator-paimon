@@ -43,6 +43,11 @@ under the License.
     <dependencies>
         <dependency>
             <groupId>org.apache.paimon</groupId>
+            <artifactId>paimon-shade-guava-32</artifactId>
+            <version>${paimon.shade.guava.version}-${paimon.shade.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.paimon</groupId>
             <artifactId>paimon-bundle</artifactId>
             <version>${project.version}</version>
         </dependency>

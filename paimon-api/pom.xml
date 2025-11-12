@@ -91,7 +91,7 @@ under the License.
                                 <includes combine.children="append">
                                     <!-- Paimon Shade -->
                                     <include>org.apache.paimon:paimon-shade-jackson-2</include>
-                                    <include>org.apache.paimon:paimon-shade-guava-30</include>
+                                    <include>org.apache.paimon:paimon-shade-guava-32</include>
                                     <include>org.apache.paimon:paimon-shade-caffeine-2</include>
 
                                     <!-- apache httpcomponents 5 -->

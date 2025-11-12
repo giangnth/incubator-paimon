@@ -72,6 +72,8 @@ public class DateTimeUtils {
                     .appendFraction(NANO_OF_SECOND, 0, 9, true)
                     .optionalEnd()
                     .toFormatter();
+    private static final DateTimeFormatter MOBIO_FORMATER =
+            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS").withZone(ZoneId.of("UTC"));
 
     /**
      * Converts the internal representation of a SQL DATE (int) to the Java type used for UDF
@@ -717,6 +719,6 @@ public class DateTimeUtils {
     }
 
     public static String formatInstant(Instant idt) {
-        return DEFAULT_TIMESTAMP_FORMATTER.format(idt);
+        return MOBIO_FORMATER.format(idt);
     }
 }
